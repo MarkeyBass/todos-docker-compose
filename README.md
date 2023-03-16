@@ -6,23 +6,23 @@ This app is using Python Flask as the backend, React JS as frontend, MySQL datab
 # Run app with docker-compose
 1. Go to the root directory of the application in the CLI
   
-  💲 docker-compose up
-  
-  ❗ Please wait until the server container is running (todos-server-1) ❗❗
+    💲 docker-compose up
+    
+    ❗ Please wait until the server container is running (todos-server-1) ❗❗
 
 2. Go to the browser
   
-  a)  Connecting to adminer (SQL client): <HOST>:8888
+    a)  Connecting to adminer (SQL client): <HOST>:8888
 
-    System: MySql
-    server: mysql
-    Username: root
-    Password: 123456
-    Database: devops_p1
+      System: MySql
+      server: mysql
+      Username: root
+      Password: 123456
+      Database: devops_p1
 
-  b) Connecting to Client: <HOST>:3333
-     
-  c) Connecting to Server (For example via postman): <HOST>:5555
+    b) Connecting to Client: <HOST>:3333
+      
+    c) Connecting to Server (For example via postman): <HOST>:5555
 
 
 # IMPORTANT NOTICE ❗ 
@@ -34,21 +34,21 @@ There are differences in port numbers between running via docker-compose and run
 Server
 1. From the root of the project enter to server directory:
   
-  💲 cd server
+    💲 cd server
 
 2. Create a new environment: 
   
-  💲 python -m venv env 
+    💲 python -m venv env 
 
 3. Install dependencies: 
   
-  💲 source env/Scripts/activate
+    💲 source env/Scripts/activate
   
-  💲 cd ../../
+    💲 cd ../../
 
 4. Start backend: 
   
-  💲 python app.py
+    💲 python app.py
   
   server will start on port 5000
 
