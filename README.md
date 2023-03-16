@@ -32,6 +32,7 @@ There are differences in port numbers between running via docker-compose and run
 # Run app on windows (without docker)
 
 Server
+-------
 1. From the root of the project enter to server directory:
   
     💲 cd server
@@ -53,6 +54,7 @@ Server
   server will start on port 5000
 
 Client
+-------
 1. From the root of the project enter to client directory:
    
    💲 cd client
