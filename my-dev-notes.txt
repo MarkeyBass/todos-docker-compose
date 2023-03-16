@@ -1,0 +1,150 @@
+venv commands:
+---------------
+💲: deactivate
+💲: rm -r env
+💲: python -m venv env
+💲: env\Scripts\activate.bat  || env/Scripts/activate.bat 
+
+💲 cd server
+💲 source env/Scripts/activate
+💲 cd ../../
+
+💲 pip install -r requirements.txt
+
+
+
+
+full requirements.txt for Dokerfile
+------------------------------------
+enter the venv and then --> 
+💲 pip freeze -r requirements.txt
+
+
+Flask==2.2.3
+marshmallow-sqlalchemy==0.29.0
+Flask-SQLAlchemy==3.0.3
+flask-marshmallow==0.14.0
+Flask-Cors==3.0.10
+mysqlclient==2.1.1
+## The following requirements were added by pip freeze:
+click==8.1.3
+colorama==0.4.6
+greenlet==2.0.2
+importlib-metadata==6.0.0
+itsdangerous==2.1.2
+Jinja2==3.1.2
+MarkupSafe==2.1.2
+marshmallow==3.19.0
+packaging==23.0
+six==1.16.0
+SQLAlchemy==2.0.6
+typing_extensions==4.5.0
+Werkzeug==2.2.3
+zipp==3.15.0
+
+
+https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported
+
+
+1) Creating && testing Dockerfile to client directory ☯
+===========================================================
+💲 cd C:\dev\DevOps\Projects\todos\client
+
+nano .dockerignore
+--------------------
+node_modules
+
+nano Dockerfile
+-----------------
+FROM node:alpine
+
+WORKDIR /app
+
+EXPOSE 3000
+
+COPY package*.json ./
+
+RUN npm install --legacy-peer-deps
+
+COPY . .
+
+CMD [ "npm", "start" ]
+
+
+test the frotend application container
+---------------------------------------
+💲 cd client
+💲 docker build . -t todos-app-client
+💲 docker run --name todos-client -p 3333:3000 todos-app-client
+💲 docker exec -it todos-client sh
+/app # ls -la
+/app # npm --version
+9.5.0
+/app # node --version
+v19.7.0
+
+docker stop todos-client
+
+2) Creating && testing Dockerfile to server directory ☯
+==========================================================
+
+cd cd C:\dev\DevOps\Projects\todos\server
+
+nano Dockerfile
+-----------------
+FROM node:alpine
+
+WORKDIR /app
+
+EXPOSE 5000
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . ./
+
+CMD [ "npm", "run", "dev" ]
+
+
+test the server application container
+----------------------------------------
+💲 docker build . -t todos-app-server
+💲 docker run --name todos-server -p 5555:5000 todos-app-server
+💲 docker exec -it todos-server sh
+💲 docker stop todos-server
+
+
+Adding Docker compose file
+----------------------------
+making sure all data and enviroment variables are accurate
+
+running docker compose commads
+--------------------------------
+💲 docker-compose up
+❗ please wait till server container is running (todos-server-1) ❗❗
+💲 docker-compose logs todos
+
+💲 docker-compose down
+
+When running the docker compose project ports change!
+
+Connecting to adminer: <HOST>:8888
+------------------------------------
+System: MySql
+server: mysql
+Username: root
+Password: 123456
+Database: devops_p1
+
+Connecting to Client: <HOST>:3333
+-----------------------------------
+TODO: enable hot reload of the react application with nodemon
+https://www.tutorialspoint.com/how-to-hot-reload-in-reactjs-docker
+
+Connecting to Server (For example via postman): <HOST>:5555
+-------------------------------------------------------------
+
+
+
+
