@@ -71,3 +71,14 @@ Client
     
     client will start on port 3000
 
+
+SQL
+----
+Change the sql configurations in the server/app.py file in order to connect propperly to your MySQL database
+
+browser
+--------
+Client will run on localhost:3000
+Server will run on localhost:5000
+
+
