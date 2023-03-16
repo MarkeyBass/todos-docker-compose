@@ -4,13 +4,13 @@ This app is using Python Flask as the backend, React JS as frontend, MySQL datab
 * The dollar sign (💲) indicates command-line interface (CLI) commands that need to be executed.
 
 # Run app with docker-compose
-1) Go to the root directory of the application in the CLI
+1. Go to the root directory of the application in the CLI
   
   💲 docker-compose up
   
   ❗ Please wait until the server container is running (todos-server-1) ❗❗
 
-2) Go to the browser
+2. Go to the browser
   
   a)  Connecting to adminer (SQL client): <HOST>:8888
 
@@ -32,40 +32,40 @@ There are differences in port numbers between running via docker-compose and run
 # Run app on windows (without docker)
 
 Server
-1) From the root of the project enter to server directory:
+1. From the root of the project enter to server directory:
   
   💲 cd server
 
-2) Create a new environment: 
+2. Create a new environment: 
   
   💲 python -m venv env 
 
-3) Install dependencies: 
+3. Install dependencies: 
   
   💲 source env/Scripts/activate
   
   💲 cd ../../
 
-4) Start backend: 
+4. Start backend: 
   
   💲 python app.py
   
   server will start on port 5000
 
 Client
-1) From the root of the project enter to client directory:
+1. From the root of the project enter to client directory:
    
    💲 cd client
 
-2) 💲 npm install
+2. 💲 npm install
 
-3) In case of an error:
+3. In case of an error:
    
    Error: error:0308010C:digital envelope routines::unsupported
    
    💲 npm audit fix --force
 
-4) 💲 npm start
+4. 💲 npm start
     
     client will start on port 3000
 
