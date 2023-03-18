@@ -146,5 +146,7 @@ Connecting to Server (For example via postman): <HOST>:5555
 -------------------------------------------------------------
 
 
+✔ Added test_server.py - unit tests file
 
+run tests: 💲 docker-compose exec server python test_server.py
 
