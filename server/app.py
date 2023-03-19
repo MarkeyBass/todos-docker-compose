@@ -1,6 +1,6 @@
 import os
 # import subprocess
-from sqlalchemy import create_engine
+# from sqlalchemy import create_engine
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import datetime
@@ -20,9 +20,9 @@ MYSQL_DB = os.environ.get('MYSQL_DB', 'devops_p1')
 # subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON {MYSQL_DB}.* TO \'{MYSQL_USER}\'@\'%\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
 
 # create database user and grant privileges to all hosts
-engine = create_engine(f'mysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}')
-with engine.connect() as con:
-    con.execute("GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';")
+# engine = create_engine(f'mysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}')
+# with engine.connect() as con:
+#     con.execute("GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';")
 
 
 # Databse configuration
