@@ -1,4 +1,5 @@
 import os
+import subprocess
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import datetime
@@ -13,6 +14,9 @@ MYSQL_USER = os.environ.get('MYSQL_USER', 'root')
 MYSQL_PORT = os.environ.get('MYSQL_PORT', '3306')
 MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '123456')
 MYSQL_DB = os.environ.get('MYSQL_DB', 'devops_p1')
+
+# Grant privileges to the user
+subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON {MYSQL_DB}.* TO \'{MYSQL_USER}\'@\'%\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
 
 # Databse configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}'
