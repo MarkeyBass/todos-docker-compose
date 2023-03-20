@@ -8,7 +8,10 @@ from flask_marshmallow import Marshmallow
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+# CORS(app, resources={r"/*": {"origins": "http://example.com"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 MYSQL_HOST = os.environ.get('MYSQL_HOST', 'localhost') # 'mysql'
 MYSQL_USER = os.environ.get('MYSQL_USER', 'root')
