@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 import datetime
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
+from flask_cors import cross_origin
 
 app = Flask(__name__)
 # CORS(app)
@@ -62,6 +63,7 @@ with app.app_context():
 # @rout      GET /todos
 # @access    Public
 @app.route('/todos',methods =['GET'])
+@cross_origin()
 def get_todos():
     all_todos = Todos.query.all()
     results = todos_schema.dump(all_todos)
@@ -71,6 +73,7 @@ def get_todos():
 # @rout      GET /todos/<id>
 # @access    Public
 @app.route('/todos/<id>',methods =['GET'])
+@cross_origin()
 def post_details(id):
     todo = Todos.query.get(id)
     return todo_schema.jsonify(todo)
@@ -79,6 +82,7 @@ def post_details(id):
 # @rout      POST /todos/<id>
 # @access    Public
 @app.route('/todos',methods=['POST'])
+@cross_origin()
 def add_todo():
     title = request.json['title']
     body = request.json['body']
@@ -92,6 +96,7 @@ def add_todo():
 # @rout      PUT /todos/<id>
 # @access    Public
 @app.route('/todos/<id>',methods = ['PUT'])
+@cross_origin()
 def update_todo(id):
     todo = Todos.query.get(id)
 
@@ -108,6 +113,7 @@ def update_todo(id):
 # @rout      DELETE /todos/<id>
 # @access    Public
 @app.route('/todos/<id>',methods=['DELETE'])
+@cross_origin()
 def delete_todo(id):
     todo = Todos.query.get(id)
     db.session.delete(todo)
