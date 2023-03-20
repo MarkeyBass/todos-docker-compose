@@ -44,3 +44,11 @@ docker rm $(docker ps -a -q) &&
 docker rmi $(docker images -q) &&
 docker volume rm $(docker volume ls -q) &&
 docker network rm $(docker network ls -q) 
+
+
+docker image prune
+docker container prune
+docker volume prune
+
+DELETES EVERYTHING❗❗❗
+docker system prune -a
