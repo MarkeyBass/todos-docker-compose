@@ -6,7 +6,7 @@ EXPOSE 3000
 
 COPY package*.json ./
 
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps --force
 
 COPY . ./
 
