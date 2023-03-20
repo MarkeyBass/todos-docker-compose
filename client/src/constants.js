@@ -1,2 +1,2 @@
-export const BASE_URL = process.env.REACT_APP_BASE_URL || "http://0.0.0.0:5555/todos"
+export const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5000/todos"
 
