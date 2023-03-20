@@ -1,0 +1,31 @@
+Space availability
+-----------------------
+df -h
+
+check size of directory
+------------------------
+sudo du -h --max-depth=1 /var/lib/docker/volumes/ef6518507c6efd8fbf980dc96b066963cc9c4e6744a77706332bd7055e68c4bd
+
+
+removing directory
+-------------------
+sudo rm -rf /path/to/file/or/directory
+
+
+
+Docker
+========
+
+Stop all running containers: 
+💲 sudo docker stop $(sudo docker ps -a -q)
+
+
+Delete all containers:
+💲 sudo docker rm $(sudo docker ps -a -q)
+
+Delete all volumes:
+💲 sudo docker volume rm $(sudo docker volume ls -q)
+
+
+Delete all images:
+💲 sudo docker rmi $(sudo docker images -a -q)

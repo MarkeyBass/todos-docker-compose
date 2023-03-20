@@ -1,23 +1,20 @@
 import os
 # import subprocess
 # from sqlalchemy import create_engine
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 from flask_marshmallow import Marshmallow
-# from flask_cors import CORS
-# from flask_cors import cross_origin
+from flask_cors import CORS
 
 app = Flask(__name__)
-# CORS(app)
-# CORS(app, resources={r"/*": {"origins": "http://example.com"}})
-# CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 
 MYSQL_HOST = os.environ.get('MYSQL_HOST', 'localhost') # 'mysql'
 MYSQL_USER = os.environ.get('MYSQL_USER', 'root')
 MYSQL_PORT = os.environ.get('MYSQL_PORT', '3306')
-MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '123456')
+MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'HansaSpiti2008')
 MYSQL_DB = os.environ.get('MYSQL_DB', 'devops_p1')
 
 # Grant privileges to the user
@@ -58,12 +55,19 @@ with app.app_context():
     db.create_all()
 
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists("static/" + path):
+        return send_from_directory('static', path)
+    else:
+        return send_from_directory('static', 'index.html')
+
 
 # @desc      Get all todos
 # @rout      GET /todos
 # @access    Public
 @app.route('/todos',methods =['GET'])
-# @cross_origin()
 def get_todos():
     all_todos = Todos.query.all()
     results = todos_schema.dump(all_todos)
@@ -73,7 +77,6 @@ def get_todos():
 # @rout      GET /todos/<id>
 # @access    Public
 @app.route('/todos/<id>',methods =['GET'])
-# @cross_origin()
 def post_details(id):
     todo = Todos.query.get(id)
     return todo_schema.jsonify(todo)
@@ -82,7 +85,6 @@ def post_details(id):
 # @rout      POST /todos/<id>
 # @access    Public
 @app.route('/todos',methods=['POST'])
-# @cross_origin()
 def add_todo():
     title = request.json['title']
     body = request.json['body']
@@ -96,7 +98,6 @@ def add_todo():
 # @rout      PUT /todos/<id>
 # @access    Public
 @app.route('/todos/<id>',methods = ['PUT'])
-# @cross_origin()
 def update_todo(id):
     todo = Todos.query.get(id)
 
@@ -113,20 +114,11 @@ def update_todo(id):
 # @rout      DELETE /todos/<id>
 # @access    Public
 @app.route('/todos/<id>',methods=['DELETE'])
-# @cross_origin()
 def delete_todo(id):
     todo = Todos.query.get(id)
     db.session.delete(todo)
     db.session.commit()
     return todo_schema.jsonify(todo)
-
-# @app.after_request
-# def after_request(response):
-#     response.headers.add('Access-Control-Allow-Origin', '*')
-#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-#     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-#     response.headers.add('Access-Control-Allow-Credentials', 'true')
-#     return response
 
 if __name__=='__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
