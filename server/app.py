@@ -1,5 +1,5 @@
 import os
-# import subprocess
+import subprocess
 # from sqlalchemy import create_engine
 from flask import Flask, jsonify, request, render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -17,8 +17,8 @@ MYSQL_PORT = os.environ.get('MYSQL_PORT', '3306')
 MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '123456')
 MYSQL_DB = os.environ.get('MYSQL_DB', 'devops_p1')
 
-# Grant privileges to the user
-# subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON {MYSQL_DB}.* TO \'{MYSQL_USER}\'@\'%\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
+# Grant privileges to the mysql user with subprocess
+subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON {MYSQL_DB}.* TO \'{MYSQL_USER}\'@\'%\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
 
 # create database user and grant privileges to all hosts
 # engine = create_engine(f'mysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}')
