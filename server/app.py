@@ -1,7 +1,7 @@
 import os
 # import subprocess
 # from sqlalchemy import create_engine
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 from flask_marshmallow import Marshmallow
@@ -55,13 +55,17 @@ with app.app_context():
     db.create_all()
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    if path != "" and os.path.exists("static/" + path):
-        return send_from_directory('static', path)
-    else:
-        return send_from_directory('static', 'index.html')
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def serve(path):
+#     if path != "" and os.path.exists("static/" + path):
+#         return send_from_directory('static', path)
+#     else:
+#         return send_from_directory('static', 'index.html')
+
+@app.route("/")
+def my_index():
+    return render_template("index.html", flask_token="Hello Flask+React")
 
 
 # @desc      Get all todos
