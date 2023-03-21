@@ -21,8 +21,9 @@ MYSQL_DB = os.environ.get('MYSQL_DB', 'devops_p1')
 # subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON {MYSQL_DB}.* TO \'{MYSQL_USER}\'@\'%\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
 
 # subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON {MYSQL_DB}.* TO \'{MYSQL_USER}\'@\'*\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
-# subprocess.call(f'mysql -h * -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON * TO \'{MYSQL_USER}\'@\'*\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
-subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON *.* TO \'{MYSQL_USER}\'@\'%\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
+subprocess.call(f'mysql -h * -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON * TO \'{MYSQL_USER}\'@\'*\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
+# subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON *.* TO \'{MYSQL_USER}\'@\'%\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
+
 
 
 
