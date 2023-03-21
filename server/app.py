@@ -19,14 +19,13 @@ MYSQL_DB = os.environ.get('MYSQL_DB', 'devops_p1')
 
 # Grant privileges to the mysql user with subprocess
 # subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON {MYSQL_DB}.* TO \'{MYSQL_USER}\'@\'%\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
-# subprocess.call(f"GRANT ALL PRIVILEGES ON *.* TO 'user'@'172.19.0.5' IDENTIFIED BY {MYSQL_PASSWORD}")
+subprocess.call(f'mysql -h {MYSQL_HOST} -u root -p{MYSQL_PASSWORD} -e "GRANT ALL PRIVILEGES ON {MYSQL_DB}.* TO \'{MYSQL_USER}\'@\'*\' IDENTIFIED BY \'{MYSQL_PASSWORD}\';"', shell=True)
+
 
 # create database user and grant privileges to all hosts
 # engine = create_engine(f'mysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}')
 # with engine.connect() as con:
 #     con.execute("GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';")
-
-subprocess.call(f"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;")
 
 
 # Databse configuration
