@@ -7,7 +7,6 @@ services:
     restart: always
     environment:
       REACT_APP_BASE_URL: "/todos"
-      # REACT_APP_BASE_URL: "http://52.207.130.141:5555/todos"
     ports:
       - '3333:3000'
     volumes:
@@ -38,15 +37,13 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: '123456'
       MYSQL_ROOT_HOST: '%'
-      MYSQL_DATABASE: devops_p1
-    # command: ["./wait-for-it.sh", "mysql:3306", "--", "bash", "-c", "mysql -u root -p123456 -e \"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;\""]
+      MYSQL_DATABASE: devops_p1   
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
     volumes:
       - mysql_data:/var/lib/mysql
-      # - ./wait-for-it.sh:/wait-for-it.sh
   adminer:
     container_name: adminer
     image: adminer
