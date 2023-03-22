@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "proxy": "http://server:5000",
   "private": true,
   "homepage": "/static/react",
   "dependencies": {
@@ -87,7 +88,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://server:5555/todos",
   "jest": {
     "roots": [
       "<rootDir>/src"
