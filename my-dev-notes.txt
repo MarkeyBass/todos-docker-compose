@@ -4,14 +4,13 @@ venv commands:
 💲: rm -r env
 💲: python -m venv env
 💲: env\Scripts\activate.bat  || env/Scripts/activate.bat 
+With git bash: 💲 source env/Scripts/activate
 
 💲 cd server
 💲 source env/Scripts/activate
 💲 cd ../../
 
 💲 pip install -r requirements.txt
-
-
 
 
 full requirements.txt for Dokerfile
@@ -166,3 +165,35 @@ server
 💲 sudo docker compose up --no-deps server
 💲 sudo docker logs -f todos-test-and-deploy-server-1
 
+How To Connect Docker With Python Flask And ReactJS FrontEnd | Docker Flask React Made Easy| 2021 HD
+------------------------------------------------------------------------------------------------------
+https://www.youtube.com/watch?v=ISCiJmY1g2M&ab_channel=THESHOW
+
+
+Installing npm in linux (Debian && Ubuntu)
+-------------------------------------------
+os inside container:
+💲 cat /etc/os-release
+
+💲 apt update
+💲 apt install npm
+💲 npm -v
+
+
+agents working dir
+--------------------
+💲 cd jenkins-agent/workspace/todos-test-and-deploy
+
+
+Removing all content from dir
+--------------------------------
+💲
+sudo rm -rf ./*
+sudo rm -rf .git
+sudo rm -rf .gitignore
+
+
+
+To specify a specific Docker Compose file for different environments, you can use the -f or --file option followed by the file path of the Docker Compose file you want to use.
+--------------------------------------------------
+💲 docker-compose -f docker-compose-prod.yml up

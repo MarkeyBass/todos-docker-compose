@@ -14,7 +14,8 @@ CORS(app)
 MYSQL_HOST = os.environ.get('MYSQL_HOST', 'localhost') # 'mysql'
 MYSQL_USER = os.environ.get('MYSQL_USER', 'root')
 MYSQL_PORT = os.environ.get('MYSQL_PORT', '3306')
-MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '123456')
+# MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '123456')
+MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'HansaSpiti2008')
 MYSQL_DB = os.environ.get('MYSQL_DB', 'devops_p1')
 
 # Grant privileges to the mysql user with subprocess

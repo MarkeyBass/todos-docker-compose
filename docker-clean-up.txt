@@ -31,48 +31,56 @@ Delete all images:
 💲 sudo docker rmi $(sudo docker images -a -q)
 
 
-
+💲 
 sudo docker stop $(sudo docker ps -a -q) &&
 sudo docker rm $(sudo docker ps -a -q) &&
 sudo docker volume rm $(sudo docker volume ls -q) &&
 sudo docker rmi $(sudo docker images -a -q)
 
 
-
+💲 
 docker stop $(docker ps -a -q) &&
 docker rm $(docker ps -a -q) &&
 docker rmi $(docker images -q) &&
 docker volume rm $(docker volume ls -q) &&
 docker network rm $(docker network ls -q) 
 
-
+💲 
 docker image prune
 docker container prune
 docker volume prune
 
 DELETES EVERYTHING❗❗❗
+💲 
 docker system prune -a
 
 
 
 removing all from docker compose project
 ------------------------------------------
-docker-compose down --volumes --remove-orphans
+💲 docker-compose down --volumes --remove-orphans
+in case of docker-compose-prod.yml
+💲 docker-compose -f docker-compose-prod.yml down --volumes --remove-orphans
 
-docker-compose rm --all --force
 
-docker volume ls -qf "label=com.docker.compose.project=<todos>" | xargs docker volume rm
+💲 docker-compose rm --all --force
+in case of docker-compose-prod.yml
+💲 docker-compose -f docker-compose-prod.yml rm --all --force
 
-docker network prune
+
+💲 docker volume ls -qf "label=com.docker.compose.project=<todos>" | xargs docker volume rm
+
+💲 docker network prune
 
 
 Full system clean up: ❗❗❗❗❗
 =======================
+💲 
 docker stop $(docker ps -a -q) &&
 docker rm $(docker ps -a -q) &&
 docker rmi $(docker images -q) &&
 docker volume rm $(docker volume ls -q) &&
 docker network rm $(docker network ls -q) 
 
-
+💲 
 docker system prune -a

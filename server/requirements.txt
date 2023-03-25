@@ -1,5 +1,6 @@
 flask
 marshmallow-sqlalchemy
+sqlalchemy
 flask_sqlalchemy
 flask_marshmallow
 flask_cors
