@@ -197,3 +197,14 @@ sudo rm -rf .gitignore
 To specify a specific Docker Compose file for different environments, you can use the -f or --file option followed by the file path of the Docker Compose file you want to use.
 --------------------------------------------------
 💲 docker-compose -f docker-compose-prod.yml up
+
+
+
+Checking jobs inside jenkins container:
+💲 ls /var/jenkins_home/jobs/env-sort/workspace
+💲 cat /var/jenkins_home/jobs/env-sort/workspace/test-server.json
+
+Ajent-1 workspace:
+💲 ubuntu@ip-172-31-56-239:~/jenkins-agent/workspace/todos-test-and-deploy$ ls
+💲 cd jenkins-agent/workspace/todos-test-and-deploy
+💲 cat test-results.json 

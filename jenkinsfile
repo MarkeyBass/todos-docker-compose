@@ -1,0 +1,102 @@
+pipeline {
+    agent {label "agent-1"}
+    
+    stages {
+        stage('CHECKOUT SCM') {
+            steps {
+                sshagent(credentials: ['controller-node']) {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: 'main']],
+                        userRemoteConfigs: [[
+                            url: 'git@github.com:MarkeyBass/todos-docker-compose.git',
+                            credentialsId: 'controller-node'
+                        ]]
+                    ])
+                }
+            }
+        }
+        
+        // stage('Build') {
+        //     steps {
+        //         sh 'sudo docker compose up -d'
+        //     }
+        // }
+       
+        stage('Test') {
+            steps {
+                sh 'sudo docker compose exec server python test_server.py > test-results.txt 2>&1'
+                sh 'cat test-results.txt'
+                script {
+                    def fileContents = readFile(file: 'test-results.txt', encoding: 'UTF-8').trim()
+                    def lines = fileContents.split('\n')
+                    def test_statistics = lines[2].trim()
+                    def test_status = lines[4].trim()
+                
+                    
+                    def testMap = [:]
+                    testMap['username'] = "${env.owner}"
+                    testMap['timestamp'] = new Date().getTime()
+                    testMap['datetime'] = new Date(testMap['timestamp']).toString()
+                    testMap['test_statistics'] = test_statistics
+                    testMap['test_status'] = test_status
+        
+                    def jsonString = groovy.json.JsonOutput.toJson(testMap)
+                    writeFile file: 'test-results.json', text: jsonString
+        
+                    println(jsonString)
+        
+                    def csvString = "username,timestamp,datetime,test_statistics,test_status\n"
+                    csvString += "${testMap['username']},${testMap['timestamp']},${testMap['datetime']},${testMap['test_statistics']},${testMap['test_status']}\n"
+                    writeFile file: 'test-results.csv', text: csvString
+                }
+            }
+        }
+
+        // stage('Upload Test to S3') {
+        //     steps {
+        //         withAWS(region: 'us-west-2', credentials: 'your-aws-credentials') {
+        //             s3Upload(bucket: 'your-bucket-name', file: 'test-results.csv')
+        //         }
+        //     }
+        // }
+        
+        // stage('Upload Test to DynamoDB') {
+        //     steps {
+        //         withAWS(region: 'us-west-2', credentials: 'your-aws-credentials') {
+        //             s3Upload(bucket: 'your-bucket-name', file: 'test-results.csv')
+        //         }
+        //     }
+        // }
+    }
+    
+    post {
+    //     
+    //     success {
+    //         // mail to: 'youremail@example.com',
+    //         //      subject: 'Your Jenkins job succeeded!',
+    //         //      body: 'Congratulations, your Jenkins job succeeded!'
+    //         sh '---- echo success ----'
+    //     }
+    //     failure {
+    //         // mail to: 'youremail@example.com',
+    //         //      subject: 'Your Jenkins job failed!',
+    //         //      body: 'Sorry, your Jenkins job failed. Please check the console output for details.'
+    //         sh '---- echo faliure ----'
+    //     }
+        always {
+    //      archiveArtifacts 'test-results.csv'
+            sh """
+                echo "END OF PIPELINE"
+         
+            """
+                // sudo docker compose down
+                // sudo docker stop \$(sudo docker ps -a -q) 
+                // sudo docker rm \$(sudo docker ps -a -q)
+                // sudo docker rmi \$(sudo docker images -q) 
+                // sudo docker volume rm \$(sudo docker volume ls -q) 
+                // sudo docker system prune -af
+
+        }
+    }
+}
