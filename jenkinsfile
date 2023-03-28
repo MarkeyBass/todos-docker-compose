@@ -1,5 +1,17 @@
 pipeline {
-    agent {label "agent-1"}
+    agent {label 'agent-1'}
+    
+    environment {
+        GIT_REPO_URL_SSH = 'git@github.com:MarkeyBass/todos-docker-compose.git'
+        
+        AWS_CREDENTIALS = 'awscredentials'
+        AWS_BUCKET = 'devops-p1-bucket'
+        AWS_DYNAMO_DB_TABLE = 'todos-test-results'
+
+        DEPLOY_JOB_ON_SUCCESS = 'todos-deploy-to-prod'
+
+        
+    }
     
     stages {
         stage('CHECKOUT SCM') {
@@ -9,7 +21,7 @@ pipeline {
                         $class: 'GitSCM',
                         branches: [[name: 'main']],
                         userRemoteConfigs: [[
-                            url: 'git@github.com:MarkeyBass/todos-docker-compose.git',
+                            url: "${GIT_REPO_URL_SSH}",
                             credentialsId: 'controller-node'
                         ]]
                     ])
@@ -17,11 +29,21 @@ pipeline {
             }
         }
         
-        // stage('Build') {
-        //     steps {
-        //         sh 'sudo docker compose up -d'
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                // sh """
+                //     isRunning=\$(sudo docker compose ps | grep 'Up' &> /dev/null; echo \$?)
+                //     if [ \$isRunning -eq 0 ]; then
+                //         echo "running"
+                        
+                //     else
+                //         echo "stopped"
+                //     fi
+                // """
+                sh 'sudo docker compose down'
+                sh 'sudo docker compose up -d'
+            }
+        }
        
         stage('Test') {
             steps {
@@ -67,7 +89,7 @@ pipeline {
                         withAWS(credentials: 'awscredentials', region: 'us-east-1') {
                             s3Upload(
                                 file: "test-results.csv",
-                                bucket: "devops-p1-bucket",
+                                bucket: "${AWS_BUCKET}",
                                 path: "test-results-${timestamp}.csv"
                             )
                         }                        
@@ -96,7 +118,7 @@ pipeline {
                         withAWS(credentials: 'awscredentials', region: 'us-east-1') {
                             sh """
                                 aws dynamodb put-item \
-                                --table-name todos-test-results \
+                                --table-name "${AWS_DYNAMO_DB_TABLE}" \
                                 --item '{
                                     \"timestamp\": {\"S\": \"${timestamp}\"}, 
                                     \"datetime\": {\"S\": \"${datetime}\"}, 
@@ -119,17 +141,25 @@ pipeline {
     post {
         
         success {
+            
+            
+  
             sh 'echo success -----------'
+            
+            // build job: "${DEPLOY_JOB_ON_SUCCESS}", wait: false, parameters: [
+            //     [$class: 'StringParameterValue', name: 'KEY', value: 'BOTH']
+            // ]
+            
+            build job: "${DEPLOY_JOB_ON_SUCCESS}", wait: false
+
         }
         failure {
 
             sh 'echo faliure -----------'
         }
         always {
-            // archiveArtifacts 'test-results.csv'
-            // sh "sudo docker compose down"
+            sh "sudo docker compose down"
             sh """
-                
                 echo "------- END OF PIPELINE ------"
             """
             // sh """

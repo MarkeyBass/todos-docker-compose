@@ -209,3 +209,25 @@ Ajent-1 workspace:
 💲 ubuntu@ip-172-31-56-239:~/jenkins-agent/workspace/todos-test-and-deploy$ ls
 💲 cd jenkins-agent/workspace/todos-test-and-deploy
 💲 cat test-results.json 
+
+
+
+tests to check if composed project is running
+-----------------------------------------------------------
+sudo docker compose ps | grep 'Up'; echo $?
+
+
+isRunning=$(sudo docker compose -f docker compose-prod.yml ps | grep 'Up' &> /dev/null; echo $?)
+if [ $isRunning -eq 0 ]; then
+    echo "running"
+else
+    echo "stopped"
+fi
+
+isRunning=$(sudo docker compose ps | grep 'Up' &> /dev/null; echo $?)
+if [ $isRunning -eq 0 ]; then
+    echo "running"
+else
+    echo "stopped"
+fi
+------------------------------------------------------------

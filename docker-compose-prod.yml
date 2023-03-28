@@ -14,7 +14,7 @@ services:
       MYSQL_PASSWORD: '123456'
       MYSQL_DB: devops_p1
     ports: 
-      - '5555:5000'
+      - '80:5000'
     depends_on:
       mysql:
         condition: service_healthy
