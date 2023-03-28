@@ -52,51 +52,93 @@ pipeline {
                 }
             }
         }
-
-        // stage('Upload Test to S3') {
-        //     steps {
-        //         withAWS(region: 'us-west-2', credentials: 'your-aws-credentials') {
-        //             s3Upload(bucket: 'your-bucket-name', file: 'test-results.csv')
-        //         }
-        //     }
-        // }
         
-        // stage('Upload Test to DynamoDB') {
-        //     steps {
-        //         withAWS(region: 'us-west-2', credentials: 'your-aws-credentials') {
-        //             s3Upload(bucket: 'your-bucket-name', file: 'test-results.csv')
-        //         }
-        //     }
-        // }
+        stage('Upload Test in csv format to S3') {
+            steps {
+                script {
+                    def timestamp
+                    if (fileExists('test-results.csv')) {
+                        def fileContents = readFile(file: 'test-results.csv', encoding: 'UTF-8').trim()
+                        def lines = fileContents.split('\n')
+                        def csvData = lines[1].trim().split(',')
+                        timestamp = csvData[1].trim()
+                        
+                        
+                        withAWS(credentials: 'awscredentials', region: 'us-east-1') {
+                            s3Upload(
+                                file: "test-results.csv",
+                                bucket: "devops-p1-bucket",
+                                path: "test-results-${timestamp}.csv"
+                            )
+                        }                        
+                    } else {
+                        error('No test results file found')
+                    }
+                
+
+                }
+            }
+        }
+
+        stage('Upload Test to DynamoDB') {
+            steps {
+                script {
+                    if (fileExists('test-results.csv')) {
+                        def testResultMap = readJSON file: './test-results.json'
+                        
+                        
+                        def timestamp = testResultMap['timestamp']
+                        def datetime = testResultMap['datetime']
+                        def username = testResultMap['username']
+                        def test_statistics = testResultMap['test_statistics']
+                        def test_status = testResultMap['test_status']
+                        
+                        withAWS(credentials: 'awscredentials', region: 'us-east-1') {
+                            sh """
+                                aws dynamodb put-item \
+                                --table-name todos-test-results \
+                                --item '{
+                                    \"timestamp\": {\"S\": \"${timestamp}\"}, 
+                                    \"datetime\": {\"S\": \"${datetime}\"}, 
+                                    \"username\": {\"S\": \"${username}\"},
+                                    \"test_statistics\": {\"S\": \"${test_statistics}\"},
+                                    \"test_status\": {\"S\": \"${test_status}\"}
+                                }'
+                            """
+                        }
+                        
+                    } else {
+                        error('No test results file found')
+                    }
+                }
+            }
+        }
+        
     }
     
     post {
-    //     
-    //     success {
-    //         // mail to: 'youremail@example.com',
-    //         //      subject: 'Your Jenkins job succeeded!',
-    //         //      body: 'Congratulations, your Jenkins job succeeded!'
-    //         sh '---- echo success ----'
-    //     }
-    //     failure {
-    //         // mail to: 'youremail@example.com',
-    //         //      subject: 'Your Jenkins job failed!',
-    //         //      body: 'Sorry, your Jenkins job failed. Please check the console output for details.'
-    //         sh '---- echo faliure ----'
-    //     }
-        always {
-    //      archiveArtifacts 'test-results.csv'
-            sh """
-                echo "END OF PIPELINE"
-         
-            """
-                // sudo docker compose down
-                // sudo docker stop \$(sudo docker ps -a -q) 
-                // sudo docker rm \$(sudo docker ps -a -q)
-                // sudo docker rmi \$(sudo docker images -q) 
-                // sudo docker volume rm \$(sudo docker volume ls -q) 
-                // sudo docker system prune -af
+        
+        success {
+            sh 'echo success -----------'
+        }
+        failure {
 
+            sh 'echo faliure -----------'
+        }
+        always {
+            // archiveArtifacts 'test-results.csv'
+            // sh "sudo docker compose down"
+            sh """
+                
+                echo "------- END OF PIPELINE ------"
+            """
+            // sh """
+            //     sudo docker stop \$(sudo docker ps -a -q) 
+            //     sudo docker rm \$(sudo docker ps -a -q)
+            //     sudo docker rmi \$(sudo docker images -q) 
+            //     sudo docker volume rm \$(sudo docker volume ls -q) 
+            //     sudo docker system prune -af
+            // """
         }
     }
 }

@@ -152,6 +152,7 @@ run tests: 💲 docker-compose exec server python test_server.py
 Running The project inside Jenkins pipeline
 ---------------------------------------------
 if [[ $(docker ps -q -f name=<project_name>) ]]; then docker-compose down; fi
+if [[ $(sudo docker ps -q -f name=todos) ]]; then echo "123456"; fi
 
 
 EC2 CPU is basic - all the containers of the Compose application are running beside the server...
