@@ -51,7 +51,7 @@ Server
   
     💲 python app.py
   
-  server will start on port 5000
+  server will start on port 5555
 
 Client
 -------
@@ -82,3 +82,13 @@ Client will run on localhost:3000
 Server will run on localhost:5000
 
 
+The Production version of docker compose
+-----------------------------------------
+The app will be running on port 80 - Will be accesible by the host name
+the adminer will be accesible on port 8888
+
+To run the app on production use the following commands:
+💲 docker-compose -f docker-compose-prod.yml up -d
+💲 docker-compose -f docker-compose-prod.yml down
+
+❗ Make sure you dont run the production and the development apps on the same host.

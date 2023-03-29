@@ -9,8 +9,6 @@ pipeline {
         AWS_DYNAMO_DB_TABLE = 'todos-test-results'
 
         DEPLOY_JOB_ON_SUCCESS = 'todos-deploy-to-prod'
-
-        
     }
     
     stages {
@@ -31,15 +29,6 @@ pipeline {
         
         stage('Build') {
             steps {
-                // sh """
-                //     isRunning=\$(sudo docker compose ps | grep 'Up' &> /dev/null; echo \$?)
-                //     if [ \$isRunning -eq 0 ]; then
-                //         echo "running"
-                        
-                //     else
-                //         echo "stopped"
-                //     fi
-                // """
                 sh 'sudo docker compose down'
                 sh 'sudo docker compose up -d'
             }
@@ -139,19 +128,14 @@ pipeline {
     }
     
     post {
-        
         success {
-            
-            
-  
             sh 'echo success -----------'
             
-            // build job: "${DEPLOY_JOB_ON_SUCCESS}", wait: false, parameters: [
-            //     [$class: 'StringParameterValue', name: 'KEY', value: 'BOTH']
-            // ]
+            build job: "${DEPLOY_JOB_ON_SUCCESS}", wait: false, parameters: [
+                [$class: 'StringParameterValue', name: 'KEY', value: 'BOTH']
+            ]
             
-            build job: "${DEPLOY_JOB_ON_SUCCESS}", wait: false
-
+            // build job: "${DEPLOY_JOB_ON_SUCCESS}", wait: false
         }
         failure {
 
@@ -169,6 +153,7 @@ pipeline {
             //     sudo docker volume rm \$(sudo docker volume ls -q) 
             //     sudo docker system prune -af
             // """
+            // archiveArtifacts 'test-results.csv'
         }
     }
 }

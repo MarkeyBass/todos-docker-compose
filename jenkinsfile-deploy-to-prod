@@ -1,0 +1,64 @@
+def gitCheckoutSCM(gitRepoUrl) {
+    sshagent(credentials: ['controller-node']) {
+        checkout([
+            $class: 'GitSCM',
+            branches: [[name: 'main']],
+            userRemoteConfigs: [[
+                url: "${gitRepoUrl}",
+                credentialsId: 'controller-node'
+            ]]
+        ])
+    }
+}
+
+def deployToProd() {
+    sh 'sudo docker compose -f docker-compose-prod.yml down'
+    sh 'sudo docker compose -f docker-compose-prod.yml up -d'
+}
+
+pipeline {
+    agent none
+
+    environment {
+        GIT_REPO_URL_SSH = 'git@github.com:MarkeyBass/todos-docker-compose.git'
+    }
+    
+    parameters {
+        choice(name: 'KEY', choices: ['ONE', 'TWO', 'BOTH'], description: 'Select which agent(s) to run on')
+    }
+    
+    stages {
+        stage('Input Key') {
+            when {
+                expression { params.KEY == null }
+            }
+            steps {
+                input message: 'Please select KEY value', parameters: [choice(name: 'KEY', choices: ['ONE', 'TWO', 'BOTH'], description: 'Select which agent(s) to run on')]
+            }
+        }
+        stage('Run on Prod-1-todos') {
+            when {
+                expression { params.KEY == 'ONE' || params.KEY == 'BOTH' }
+            }
+            agent {
+                label 'Prod-1-todos'
+            }
+            steps {
+                gitCheckoutSCM(GIT_REPO_URL_SSH)
+                deployToProd()
+            }
+        }
+        stage('Run on Prod-2-todos') {
+            when {
+                expression { params.KEY == 'TWO' || params.KEY == 'BOTH' }
+            }
+            agent {
+                label 'Prod-2-todos'
+            }
+            steps {
+                gitCheckoutSCM(GIT_REPO_URL_SSH)
+                deployToProd()
+            }
+        }
+    }
+}
