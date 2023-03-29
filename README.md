@@ -71,10 +71,10 @@ Client
     
     client will start on port 3000
 
-
 SQL
 ----
 Change the sql configurations in the server/app.py file in order to connect propperly to your MySQL database
+
 
 browser
 --------
@@ -111,5 +111,3 @@ The traffic to the app will be managed by load balancer.
 After running the todos-deploy-to-prod job / todos-test-and-deploy job or commiting the changes to GitHub repo,
 You can view the app on: 
 🔗 todos-prod-balancer-256120987.us-east-1.elb.amazonaws.com
-
-
