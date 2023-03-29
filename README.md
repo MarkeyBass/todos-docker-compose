@@ -91,4 +91,25 @@ To run the app on production use the following commands:
 💲 docker-compose -f docker-compose-prod.yml up -d
 💲 docker-compose -f docker-compose-prod.yml down
 
-❗ Make sure you dont run the production and the development apps on the same host.
+❗ Make sure you don't run the production and the development apps on the same host.
+
+
+The app will be deployed by two different Jenkins jobs
+-------------------------------------------------------
+1. todos-test-and-deploy job is configured inside jenkinsfile
+    description:
+    Create a Jenkins pipeline job that pulls the code from the GitHub repository, builds the Docker image, 
+    runs unit tests on the application. If the tests succeeded it will trigger the next job `todos-deploy-to-prod`.
+
+2. todos-deploy-to-prod job is configured inside jenkinsfile-deploy-to-prod
+    description:
+    todos-deploy-to-prod job will be triggered by todos-test-and-deploy job only if todos-test-and-deploy finishes with success.
+    todos-deploy-to-prod will deploy the todos application on the prodaction server.
+    The production server is one of the EC2 machines (Jenkins Agent nodes) Prod-1-todos or Prod-2-todos.
+
+The traffic to the app will be managed by load balancer.
+After running the todos-deploy-to-prod job / todos-test-and-deploy job or commiting the changes to GitHub repo,
+You can view the app on: 
+🔗 todos-prod-balancer-256120987.us-east-1.elb.amazonaws.com
+
+
